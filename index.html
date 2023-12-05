@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Mini-Jeu de Devine le Chiffre</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Guess Number</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Devine le Chiffre</h1>
-    <p>Entrez un chiffre :</p>
-    <input type="text" id="userGuess" />
-    <button onclick="checkGuess()">Vérifier</button>
-    <p id="feedback"></p>
-  </div>
-
-  <div id="timer">30</div> <!-- Nouvelle div pour afficher le chrono -->
-
-  <button onclick="resetGame()">Recommencer</button>
-
-
-  <script src="script.js"></script>
+    <div class="chrono">
+        <h1><time>00.00.00</time></h1>
+    </div>
+    <div class="chiffreSupp">
+        <p>Test chiffre supp 65</p>
+    </div>
+    <div class="flecheHaut"></div>
+    <div class="barreRecherche">
+        <input type="text" placeholder="Search..">
+        <button id="start">start</button>
+    </div>
+    <div class="flecheBas"></div>
+    <div class="chiffreInf">
+        <p>Test chiffre inf 23</p>
+    </div>
 </body>
+<script src="script.js"></script>
 </html>

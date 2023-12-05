@@ -1,4 +1,4 @@
-// Génère un chiffre aléatoire entre 1 et 100
+/*// Génère un chiffre aléatoire entre 1 et 100
 let secretNumber = generateRandomNumber();
 
 function generateRandomNumber() {
@@ -129,3 +129,36 @@ function resetGame() {
   // Réinitialise le chrono
   resetTimer();
 }
+*/
+
+var h1 = document.getElementsByTagName('h1')[0];
+var start = document.getElementById('start');
+var sec = 0;
+var min = 0;
+var hrs = 0;
+
+function tick() {
+  sec++;
+  if (sec >= 60) {
+    sec = 0;
+    min++;
+    if (min >= 60) {
+      min = 0;
+      hrs++;
+    }
+  }
+}
+
+function add() {
+  tick();
+  h1.textContent = (hrs > 9 ? hrs : '0' + hrs) + ':' +
+      (min > 9 ? min : '0' + min) + ':' + (sec > 9 ? sec : '0' + sec);
+  timer();
+}
+
+function timer() {
+  t = setTimeout(add, 30);
+}
+
+
+start.onclick = timer;

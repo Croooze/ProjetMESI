@@ -1,41 +1,64 @@
-body {
+  body {
     font-family: Arial, sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
-  }
-  
-  .container {
-    text-align: center;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  input {
-    padding: 5px;
-    margin-right: 5px;
-  }
-  
-  button {
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  #feedback {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 10px;
+    overflow: hidden;
+    background-color: antiquewhite;
   }
 
-  .displayed-number {
-    position: fixed;
-    font-size: 36px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
+  .barreRecherche input[type=text] {
+    border: 1px solid #ccc;
+    font-size: xx-large;
   }
-  
+
+  .barreRecherche {
+    padding: 5%;
+  }
+
+  .chiffreSupp {
+    padding-top: 5%;
+    font-size: xx-large;
+  }
+
+  .chiffreInf {
+    padding-bottom: 5%;
+    font-size: xx-large;
+  }
+
+  .chrono {
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    font-size: xx-large;
+  }
+
+  .flecheHaut {
+    width: 0; 
+    height: 0; 
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    
+    border-top: 50px solid green;
+  }
+
+  .flecheBas {
+    width: 0; 
+    height: 0; 
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    
+    border-bottom: 50px solid red;
+  }
+
+  #start {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 8px 16px;
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: 17px;
+  }
