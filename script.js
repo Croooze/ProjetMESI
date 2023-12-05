@@ -161,4 +161,16 @@ function timer() {
 }
 
 
+// Génère un Chiffre au hasard aléatoire.
+function getRandomNumber() {
+  return Math.floor(Math.random() * max)
+}
+
 start.onclick = timer;
+
+// Repère si la touche 'Entrer' est appuyer.
+document.addEventListener("keyup", function(event) {
+  if (event.code === 'Enter') {
+      alert('Enter is pressed!');
+  }
+});
