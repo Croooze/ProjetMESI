@@ -1,7 +1,5 @@
 // game.js
 
-// game.js
-
 let hiddenNumber;
 let startTime;
 let timerInterval;
@@ -9,7 +7,7 @@ let timerInterval;
 function startGame() {
     // Si hiddenNumber n'est pas défini, générer un chiffre aléatoire entre 1 et 1000
     if (!hiddenNumber) {
-        hiddenNumber = Math.floor(Math.random() * 1000) + 1;
+        hiddenNumber = Math.floor(Math.random() * 10) + 1;
         startTime = new Date().getTime(); // Enregistrez le temps de début du jeu
         timerInterval = setInterval(updateTimer, 1000); // Lancer le chronomètre
     }
@@ -34,10 +32,11 @@ function startGame() {
             clearInterval(timerInterval);
             displayElapsedTime();
 
+            // Afficher le bouton "Recommencer"
+            showRestartButton();
+
             // Réinitialiser le jeu pour permettre de rejouer
-            hiddenNumber = null;
-            startTime = null;
-            timerInterval = null;
+            resetGame();
         }
 
         // Effacer le contenu de la barre de recherche
@@ -47,20 +46,35 @@ function startGame() {
     }
 }
 
-function updateTimer() {
-    // Mettez à jour le contenu de la balise time avec le temps écoulé
-    let currentTime = new Date().getTime();
-    let elapsedTime = Math.floor((currentTime - startTime) / 1000);
-    let formattedTime = formatTime(elapsedTime);
-    document.querySelector('time').textContent = formattedTime;
+function resetGame() {
+    // Réinitialiser les éléments nécessaires pour recommencer
+    hiddenNumber = null;
+    startTime = null;
+    timerInterval = null;
+
+    // Réinitialiser le contenu des divs
+    document.querySelector('.chiffreInf').textContent = '';
+    document.querySelector('.chiffreSupp').textContent = '';
+    document.querySelector('time').textContent = '00:00:00';
+
+    // Cacher le bouton "Recommencer"
+    hideRestartButton();
 }
 
-function formatTime(seconds) {
-    // Formatage du temps en HH:MM:SS
-    let hours = Math.floor(seconds / 3600);
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let remainingSeconds = seconds % 60;
-    return `${padZero(hours)}:${padZero(minutes)}:${padZero(remainingSeconds)}`;
+function updateTimer() {
+  // Mettez à jour le contenu de la balise time avec le temps écoulé
+  let currentTime = new Date().getTime();
+  let elapsedTime = currentTime - startTime;
+  let formattedTime = formatTime(elapsedTime);
+  document.querySelector('time').textContent = formattedTime;
+}
+
+
+function formatTime(milliseconds) {
+  let minutes = Math.floor(milliseconds / (60 * 1000));
+  let seconds = Math.floor((milliseconds % (60 * 1000)) / 1000);
+  let remainingMilliseconds = milliseconds % 1000;
+  return `${padZero(minutes)}:${padZero(seconds)}:${padZero(remainingMilliseconds)}`;
 }
 
 function padZero(num) {
@@ -74,6 +88,25 @@ function displayElapsedTime() {
     let elapsedTime = Math.floor((currentTime - startTime) / 1000);
     alert(`Félicitations ! Vous avez trouvé le chiffre caché en ${formatTime(elapsedTime)}.`);
 }
+
+function showRestartButton() {
+    // Créer un bouton "Recommencer"
+    let restartButton = document.createElement('button');
+    restartButton.textContent = 'Recommencer';
+    restartButton.addEventListener('click', resetGame);
+
+    // Ajouter le bouton au document
+    document.querySelector('.barreRecherche #restartContainer').appendChild(restartButton);
+}
+
+function hideRestartButton() {
+    // Supprimer le bouton "Recommencer" s'il existe
+    let restartButton = document.querySelector('.barreRecherche #restartContainer button');
+    if (restartButton) {
+        restartButton.remove();
+    }
+}
+
 
 // Ajouter un gestionnaire d'événements pour la touche Entrée
 document.addEventListener('keydown', function (event) {
