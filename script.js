@@ -1,45 +1,34 @@
-// game.js
-
-let hiddenNumber;
+let nombreCache;
 let startTime;
 let timerInterval;
+let elapsedTimeToWin; 
 
 function startGame() {
-    // Si hiddenNumber n'est pas défini, générer un chiffre aléatoire entre 1 et 1000
-    if (!hiddenNumber) {
-        hiddenNumber = Math.floor(Math.random() * 10) + 1;
-        startTime = new Date().getTime(); // Enregistrez le temps de début du jeu
-        timerInterval = setInterval(updateTimer, 1000); // Lancer le chronomètre
+    if (!nombreCache) {
+        nombreCache = Math.floor(Math.random() * 10) + 1;
+        startTime = new Date().getTime(); 
+        timerInterval = setInterval(updateTimer, 10); 
     }
 
-    // Récupérer la valeur saisie par l'utilisateur
     let userGuessInput = document.getElementById('userGuess');
     let userGuess = parseInt(userGuessInput.value);
 
-    // Vérifier si le chiffre est inférieur, égal ou supérieur au chiffre caché
     if (!isNaN(userGuess)) {
-        if (userGuess < hiddenNumber) {
+        if (userGuess < nombreCache) {
             document.querySelector('.chiffreInf').textContent = `Le chiffre caché est supérieur à ${userGuess}.`;
-            document.querySelector('.chiffreSupp').textContent = ''; // Réinitialiser le texte
-        } else if (userGuess > hiddenNumber) {
+            document.querySelector('.chiffreSupp').textContent = '';
+        } else if (userGuess > nombreCache) {
             document.querySelector('.chiffreSupp').textContent = `Le chiffre caché est inférieur à ${userGuess}.`;
-            document.querySelector('.chiffreInf').textContent = ''; // Réinitialiser le texte
+            document.querySelector('.chiffreInf').textContent = '';
         } else {
             document.querySelector('.chiffreInf').textContent = '';
-            document.querySelector('.chiffreSupp').textContent = `Félicitations, vous avez gagné ! Le chiffre caché était ${hiddenNumber}.`;
-
-            // Arrêter le chronomètre
+            document.querySelector('.chiffreSupp').textContent = ''; // Réinitialise le message
             clearInterval(timerInterval);
             displayElapsedTime();
-
-            // Afficher le bouton "Recommencer"
             showRestartButton();
-
-            // Réinitialiser le jeu pour permettre de rejouer
             resetGame();
         }
 
-        // Effacer le contenu de la barre de recherche
         userGuessInput.value = '';
     } else {
         alert("Veuillez entrer un nombre valide.");
@@ -47,69 +36,47 @@ function startGame() {
 }
 
 function resetGame() {
-    // Réinitialiser les éléments nécessaires pour recommencer
-    hiddenNumber = null;
+    nombreCache = null;
     startTime = null;
     timerInterval = null;
-
-    // Réinitialiser le contenu des divs
+    elapsedTimeToWin = null;
     document.querySelector('.chiffreInf').textContent = '';
     document.querySelector('.chiffreSupp').textContent = '';
-    document.querySelector('time').textContent = '00:00:00';
+    document.querySelector('time').textContent = '00:00:00'; 
+}
 
-    // Cacher le bouton "Recommencer"
-    hideRestartButton();
+function showRestartButton() {
+    let restartButton = document.createElement('button');
+    restartButton.textContent = 'Recommencer';
+    restartButton.onclick = function() {
+        window.location.reload();
+    };
+    document.getElementById('restartContainer').appendChild(restartButton);
 }
 
 function updateTimer() {
-  // Mettez à jour le contenu de la balise time avec le temps écoulé
-  let currentTime = new Date().getTime();
-  let elapsedTime = currentTime - startTime;
-  let formattedTime = formatTime(elapsedTime);
-  document.querySelector('time').textContent = formattedTime;
-}
+    let currentTime = new Date().getTime();
+    let elapsedTime = currentTime - startTime;
+    let minutes = Math.floor(elapsedTime / 60000);
+    let seconds = Math.floor((elapsedTime % 60000) / 1000);
+    let milliseconds = elapsedTime % 1000;
 
+    // Met à jour la variable elapsedTimeToWin avec le format correct
+    elapsedTimeToWin = `${padZero(minutes)}:${padZero(seconds)}.${padZero(Math.floor(milliseconds / 10), 2)}`;
 
-function formatTime(milliseconds) {
-  let minutes = Math.floor(milliseconds / (60 * 1000));
-  let seconds = Math.floor((milliseconds % (60 * 1000)) / 1000);
-  let remainingMilliseconds = milliseconds % 1000;
-  return `${padZero(minutes)}:${padZero(seconds)}:${padZero(remainingMilliseconds)}`;
-}
-
-function padZero(num) {
-    // Ajoute un zéro devant un nombre si celui-ci est inférieur à 10
-    return (num < 10 ? '0' : '') + num;
+    document.querySelector('time').textContent = `${padZero(minutes)}:${padZero(seconds)}.${padZero(Math.floor(milliseconds / 10), 2)}`;
 }
 
 function displayElapsedTime() {
     // Affiche le temps total écoulé à la fin du jeu
-    let currentTime = new Date().getTime();
-    let elapsedTime = Math.floor((currentTime - startTime) / 1000);
-    alert(`Félicitations ! Vous avez trouvé le chiffre caché en ${formatTime(elapsedTime)}.`);
+    document.querySelector('.chiffreSupp').textContent = `Félicitations ! Vous avez trouvé le chiffre caché en ${elapsedTimeToWin} secondes.`;
 }
 
-function showRestartButton() {
-    // Créer un bouton "Recommencer"
-    let restartButton = document.createElement('button');
-    restartButton.textContent = 'Recommencer';
-    restartButton.addEventListener('click', resetGame);
-
-    // Ajouter le bouton au document
-    document.querySelector('.barreRecherche #restartContainer').appendChild(restartButton);
+function padZero(num, length = 2) {
+    return num.toString().padStart(length, '0');
 }
 
-function hideRestartButton() {
-    // Supprimer le bouton "Recommencer" s'il existe
-    let restartButton = document.querySelector('.barreRecherche #restartContainer button');
-    if (restartButton) {
-        restartButton.remove();
-    }
-}
-
-
-// Ajouter un gestionnaire d'événements pour la touche Entrée
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         startGame();
     }
