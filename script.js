@@ -120,3 +120,45 @@ document.addEventListener('keydown', function(event) {
         startGame();
     }
 });
+
+/*** Récuperation des données en base ***/
+
+/*** Pseudo ***/
+
+document.getElementById('start-button').addEventListener('click', function() {
+    var pseudo = document.getElementById('pseudo-input').value;
+
+    if (pseudo !== "") {
+        // Envoyer le pseudo au code PHP
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "insert_user.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Utilisateur inséré avec succès.");
+                    // Rediriger l'utilisateur vers la page d'accueil ou une autre page
+                    window.location.href = "accueil.php";
+                } else {
+                    console.error("Erreur lors de l'insertion de l'utilisateur.");
+                }
+            }
+        };
+        xhr.send("pseudo=" + encodeURIComponent(pseudo));
+    } else {
+        document.getElementById('error-message').textContent = "Veuillez entrer un pseudo.";
+    }
+});
+
+/*** Temps ***/
+
+
+var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var bestTime = JSON.parse(this.responseText).bestTime;
+            document.getElementById("best-time").textContent = bestTime;
+        }
+    };
+    xhr.open("GET", "get_best_time.php", true);
+    xhr.send();

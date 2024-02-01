@@ -11,19 +11,19 @@ if ($conn->connect_error) {
     die("La connexion a échoué : " . $conn->connect_error);
 }
 
-// Traitement du formulaire d'inscription
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $pseudo = $_POST["pseudo"];
-    $temps = $_POST["temps"];
+// Récupérer les données du pseudo et du temps depuis la base de données
+$sql = "SELECT pseudo, temps FROM user ORDER BY temps ASC LIMIT 1";
 
-    // Insertion des données dans la base de données
-    $sql = "INSERT INTO user (pseudo, temps) VALUES ('$pseudo', '$temps')";
+$result = $conn->query($sql);
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Nouvel utilisateur créé avec succès";
-    } else {
-        echo "Erreur : " . $sql . "<br>" . $conn->error;
-    }
+if ($result->num_rows > 0) {
+    // Afficher les données du pseudo et du temps
+    $row = $result->fetch_assoc();
+    $pseudo = $row["pseudo"];
+    $temps = $row["temps"];
+    echo "Le meilleur temps est de $temps secondes réalisé par $pseudo";
+} else {
+    echo "Aucun utilisateur n'a encore joué.";
 }
 
 $conn->close();
