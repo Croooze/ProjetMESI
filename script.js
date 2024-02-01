@@ -1,3 +1,42 @@
+/*** Page login ***/
+
+  const guessButton = document.getElementById('guess-button');
+  const mastermindButton = document.getElementById('mastermind-button');
+  const startButton = document.getElementById('start-button');
+  const pseudoInput = document.getElementById('pseudo-input');
+  const errorMessage = document.getElementById('error-message');
+
+  guessButton.addEventListener('click', () => {
+    guessButton.classList.add('selected');
+    mastermindButton.classList.remove('selected');
+    startButton.disabled = false;
+    errorMessage.style.display = 'none';
+  });
+
+  mastermindButton.addEventListener('click', () => {
+    mastermindButton.classList.add('selected');
+    guessButton.classList.remove('selected');
+    startButton.disabled = false;
+    errorMessage.style.display = 'none';
+  });
+
+  startButton.addEventListener('click', () => {
+    const pseudo = pseudoInput.value.trim();
+    if (pseudo === '') {
+      errorMessage.style.display = 'block';
+      return;
+    }
+    if (guessButton.classList.contains('selected')) {
+      window.location.href = 'index.html';
+    } else if (mastermindButton.classList.contains('selected')) {
+      window.location.href = 'mastermind.html';
+    } else {
+      errorMessage.style.display = 'block';
+    }
+  });
+
+/*** Page guess-numb ***/
+
 let nombreCache;
 let startTime;
 let timerInterval;

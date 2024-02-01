@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style-login.css">
-    <title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Page de Connexion</title>
 </head>
 <body>
-    <div class="accueil">
-        <form method="post" action="">
-            <h1 class="formulaire">CONNEXION</h1>
-            <input type="text" id="Pseudo" name="Pseudo" placeholder="Pseudo" required>
-            <input type="submit" value="Connexion" name="login" disabled="disabled">
-        </form>
-        <div>
-            <img src="Malphite_Render.webp">
-        </div>
-        <button class="button-5" role="button" onclick="window.location.href = 'index.html'">Jouer</button>
-    </div>
+<div id="login-container">
+  <h1>Numb-Game</h1>
+  <input type="text" id="pseudo-input" placeholder="Entrez votre pseudo">
+  <button id="start-button">Start</button>
+  <div>
+    <button class="mode-button" id="guess-button">Guess-Numb</button>
+    <button class="mode-button" id="mastermind-button">MasterMind</button>
+  </div>
+  <div id="error-message">Veuillez sélectionner un mode de jeu et entrer votre pseudo.</div>
+</div>
+<script src=script.js></script>
 </body>
 </html>
